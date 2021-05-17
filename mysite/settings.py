@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os # 追加
+import environ # シークレットキー等の保護用に追加
+
+env = environ.Env() # シークレットキー等の保護用に追加
+env.read_env(os.path.join(BASE_DIR, ".env")) # シークレットキー等の保護用に追加
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-u%-luid_zoic7gaj)d4wo*(c&v=jv6c=1s_f0k2cpglqoz4yv+'
+SECRET_KEY = env("SECRET_KEY") # シークレットキー等の保護用に変更
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG') # シークレットキー等の保護用に変更
 
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com'] # 変更
 
@@ -39,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig', # 追加 blogフォルダ内の apps.py の BlogConfig class
+    'app.apps.AppConfig' # 追加 .env でのセキュリティ保護用
 ]
 
 MIDDLEWARE = [
