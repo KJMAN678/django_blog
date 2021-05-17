@@ -1,2 +1,5 @@
 gunicorn
 psycopg2
+nginx
+Django
+python-environ

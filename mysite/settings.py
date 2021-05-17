@@ -14,11 +14,12 @@ from pathlib import Path
 import os # 追加
 import environ # シークレットキー等の保護用に追加
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env() # シークレットキー等の保護用に追加
 env.read_env(os.path.join(BASE_DIR, ".env")) # シークレットキー等の保護用に追加
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -43,7 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig', # 追加 blogフォルダ内の apps.py の BlogConfig class
-    'app.apps.AppConfig' # 追加 .env でのセキュリティ保護用
 ]
 
 MIDDLEWARE = [
@@ -80,13 +80,18 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+'''
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+'''
 
+DATABASES = {
+    'default':env.db(),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
