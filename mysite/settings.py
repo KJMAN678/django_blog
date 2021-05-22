@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig', # add. BlogConfig class in blog folder apps.py 
+    'storages'
 ]
 
 MIDDLEWARE = [
@@ -136,5 +137,31 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATIC_URL = '/static/' # add
+# STATIC_URL = '/static/' # add
 STATIC_ROOT = os.path.join(BASE_DIR, 'static') # add
+
+from storages.backends.s3boto3 import S3Boto3Storage
+from tempfile import SpooledTemporaryFile
+
+class CustomS3Boto3Storage(S3Boto3Storage):
+    def _save(self, name, content):
+        content.seek(0, os.SEEK_SET)
+        
+        with SpooledTemporaryFile() as content_autoclose:
+            
+            content_autoclose.write(content.read())
+            return super(CustomS3Boto3Storage, self)._save(name, content_autoclose)
+            
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
+AWS_3S_OBJECT_PARAMETERS = {
+    'CasheControl': "max-age=86400",
+}
+DEFAULT_AUTO_FIELD = 'config.settings.CustomS3Boto3Storage'
+
+AWS_LOCATION = 'static'
+AWS_DEFAULT_ACL = None
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'mysite.settings.CustomS3Boto3Storage'
