@@ -2,3 +2,4 @@ gunicorn
 psycopg2
 Django
 python-environ
+psycopg2-binary
