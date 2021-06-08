@@ -163,7 +163,7 @@ AWS_S3_CUSTOM_DOMAIN = "%s.s3.amazonaws.com" % AWS_STORAGE_BUCKET_NAME
 AWS_3S_OBJECT_PARAMETERS = {
     'CasheControl': "max-age=86400",
 }
-DEFAULT_AUTO_FIELD = 'config.settings.CustomS3Boto3Storage'
+DEFAULT_FILE_STORAGE = 'mysite.settings.CustomS3Boto3Storage'
 
 AWS_LOCATION = 'static'
 AWS_DEFAULT_ACL = None
