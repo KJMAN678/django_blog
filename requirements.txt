@@ -2,3 +2,5 @@ gunicorn
 Django
 python-environ
 psycopg2-binary
+django-storages
+boto3
