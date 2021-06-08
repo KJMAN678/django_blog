@@ -44,7 +44,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig', # add. BlogConfig class in blog folder apps.py 
-    'storages'
+    'storages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'bootstrap4',
 ]
 
 MIDDLEWARE = [
